@@ -5,8 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Votes extends Model
+class Vote extends Model
 {
     use HasFactory;
-    protected $fillable = ['participant_id','entry_id','contest_id',];
+    protected $fillable = ['voter_email','entry_id','contest_id',];
 }

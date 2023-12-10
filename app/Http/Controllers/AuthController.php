@@ -129,18 +129,34 @@ class AuthController extends Controller
 
         $token = Str::random(8);
 
-        DB::table('password_reset_tokens')->insert([
-            'email' => $request->email, 
-            'token' => $token, 
-            'created_at' => Carbon::now()
-          ]);
+        $check = DB::table('password_reset_tokens')->where(['email' => $request->email])->first();
+        if($check){
+            DB::table('password_reset_tokens')->where(['email' => $request->email])->update([ 'token' => $token, ]);
+            Mail::send('email.forgotpassword', ['token' => $token], function($message) use($request){
+                $message->to($request->email);
+                $message->subject('Reset Password');
+            });
+    
+            return response ('We have sent an OTP to your Email',200);
 
-        Mail::send('email.forgotpassword', ['token' => $token], function($message) use($request){
-            $message->to($request->email);
-            $message->subject('Reset Password');
-        });
+        }else{
 
-        return response ('We have sent an OTP to your Email',200);
+            DB::table('password_reset_tokens')->insert([
+                'email' => $request->email, 
+                'token' => $token, 
+                'created_at' => Carbon::now()
+              ]);
+    
+            Mail::send('email.forgotpassword', ['token' => $token], function($message) use($request){
+                $message->to($request->email);
+                $message->subject('Reset Password');
+            });
+    
+            return response ('We have sent an OTP to your Email',200);
+
+        }
+
+       
     }
 
     
@@ -175,8 +191,8 @@ class AuthController extends Controller
       }
 
        // resgister user 
-    public function countUsers()
-    {
+   
+       public function countUsers() {
         
         $Users = User::where('role', 'user');
         $userCount = $Users->count();

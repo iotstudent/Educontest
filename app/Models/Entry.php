@@ -9,5 +9,5 @@ class Entry extends Model
 {
     use HasFactory;
     
-    protected $fillable = ['participant_id','contest_id','document_uploaded'];
+    protected $fillable = ['full_name','email','contest_id','document_uploaded','entry_extras'];
 }

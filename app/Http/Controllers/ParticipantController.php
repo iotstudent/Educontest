@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 class ParticipantController extends Controller
 {
   
-   public function getParticipantsByContestId(Request $request)
+   public function getParticipantsByContestId($contest_id)
 
    
 
@@ -21,7 +21,7 @@ class ParticipantController extends Controller
        $value= DB::table('entries')
         ->join('participants', 'entries.participant_id', '=', 'participants.id')
         ->select(DB::raw('entries.created_at AS date_created,participants.first_name AS first_name,participants.last_name AS last_name,participants.email AS email'))
-        ->where('contest_id',$request->contest_id)
+        ->where('contest_id',$contest_id)
         ->get();
 
         return response ($value,200);

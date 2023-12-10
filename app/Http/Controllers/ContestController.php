@@ -45,7 +45,7 @@ class ContestController extends Controller
         if($request->contest_photo) {
             $fileName = time().'_'.$request->contest_photo->getClientOriginalName();
             $filePath = $request->file('contest_photo')->storeAs('uploads', $fileName, 'public');
-            $contest_photo= '/storage/' . $filePath;
+            $contest_photo= 'http://127.0.0.1:8000/storage/' . $filePath;
         }
 
         $response = Contest::create([
@@ -198,7 +198,7 @@ class ContestController extends Controller
         if($request->prize_pic) {
             $fileName = time().'_'.$request->prize_pic->getClientOriginalName();
             $filePath = $request->file('prize_pic')->storeAs('uploads', $fileName, 'public');
-            $prize_pic= '/storage/' . $filePath;
+            $prize_pic= 'http://127.0.0.1:8000/storage/' . $filePath;
         }
 
         $response = Prize::create([
@@ -291,10 +291,10 @@ class ContestController extends Controller
      /**
      * Display a listing of the resource. by ID
      */
-    public function fetchContestById(Request $request)
+    public function fetchContestById($user_id)
     {
         
-        $response=Contest::WHERE('user_id',$request->user_id)->get();
+        $response=Contest::WHERE('user_id',$user_id)->get();
 
         if($response){
             return  response($response,200);
@@ -318,10 +318,10 @@ class ContestController extends Controller
         }
     }
 
-    public function fetchLiveContestByUserId(Request $request)
+    public function fetchLiveContestByUserId($user_id)
     {
         // 
-        $response = Contest::where('end_date','>',now())->Where('user_id',$request->user_id)->get();
+        $response = Contest::where('end_date','>',now())->Where('user_id',$user_id)->get();
         
         
         if($response){
@@ -329,12 +329,13 @@ class ContestController extends Controller
         } else{
             return response("You have not created any contest");
         }
+
     }
 
-    public function countLiveContestByUserId(Request $request)
+    public function countLiveContestByUserId($user_id)
     {
         // 
-        $response = Contest::where('end_date','>',now())->Where('user_id',$request->user_id)->count();
+        $response = Contest::where('end_date','>',now())->Where('user_id',$user_id)->count();
         
         
         if($response){
