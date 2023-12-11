@@ -1,4 +1,4 @@
-FROM php:8.1-fpm
+# FROM php:8.1-fpm
 
 # # Install system dependencies
 # RUN apt-get update && apt-get install -y \
@@ -33,7 +33,7 @@ FROM composer:2.0 as build
 COPY . /app/
 RUN composer install --prefer-dist --no-dev --optimize-autoloader --no-interaction
 
-FROM php:8.0-apache-buster as production
+FROM php:8.1-apache-buster as production
 
 ENV APP_ENV=production
 ENV APP_DEBUG=false
