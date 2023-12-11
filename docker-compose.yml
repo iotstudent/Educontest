@@ -3,12 +3,12 @@ services:
   app:
     build:
       args:
-        user: eduuser
+        user: eduuser-2
         uid: 1000
       context: ./
       dockerfile: Dockerfile
-    image: educontestimage
-    container_name: educontestcontainer
+    image: educontestimage-2
+    container_name: educontestcontainer-2
     restart: unless-stopped
     working_dir: /var/www/
     volumes:
@@ -17,7 +17,7 @@ services:
       - edunetwork
   db:
     image: mysql:8.0
-    container_name: educontestdbcontainer
+    container_name: educontestdbcontainer-2
     restart: unless-stopped
     environment:
       MYSQL_DATABASE: ${DB_DATABASE}
@@ -32,7 +32,7 @@ services:
       - edunetwork
   nginx:
     image: nginx:alpine
-    container_name: educontestcontainer
+    container_name: educontestcontainer-2
     restart: unless-stopped
     ports:
       - 8000:80
